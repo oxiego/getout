@@ -1,0 +1,119 @@
+<div class="container">
+    
+    <div class="mtb-3 card">
+        <div class="card-header">
+            <h2 class="text-center">Item Editor</h2>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="newItem.name">Title</label>
+                    <input class="form-control" placeholder="Name" [(ngModel)] = "newItem.name" >
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="newItem.description">Description</label>
+                    <input class="form-control" placeholder="Description" [(ngModel)] = "newItem.description">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="newItem.category.name">Description</label>
+                    <input class="form-control" placeholder="Category" [(ngModel)] = "newItem.category.name">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="newItem.articleMeasure.height">Height</label>
+                    <input class="form-control" placeholder="Height" [(ngModel)] = "newItem.articleMeasure.height" >
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="newItem.articleMeasure.length">Length</label>
+                    <input class="form-control" placeholder="Length" [(ngModel)] = "newItem.articleMeasure.length">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="newItem.articleMeasure.width">Width</label>
+                    <input class="form-control" placeholder="Width" [(ngModel)] = "newItem.articleMeasure.width">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="newItem.packedMeasure.height">Packed Height</label>
+                    <input class="form-control" placeholder="Packed Height" [(ngModel)] = "newItem.packedMeasure.height" >
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="newItem.packedMeasure.length">Packed Length</label>
+                    <input class="form-control" placeholder="Packed Length" [(ngModel)] = "newItem.packedMeasure.length">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="newItem.packedMeasure.width">Packed Width</label>
+                    <input class="form-control" placeholder="Packed Width" [(ngModel)] = "newItem.packedMeasure.width">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-4">
+                    <label for="newItem.manufacturer">Manufacturer</label>
+                    <input class="form-control" placeholder="Manufacturer" [(ngModel)] = "newItem.manufacturer" >
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="newItem.paidPrice">Price</label>
+                    <input class="form-control" placeholder="Price" [(ngModel)] = "newItem.paidPrice">
+                </div>
+                <div class="form-group col-md-4">
+                    <label for="newItem.articelLink">Link</label>
+                    <input class="form-control" placeholder="Article Link" [(ngModel)] = "newItem.articelLink">
+                </div>
+            </div>
+            <div class="row">
+                <div class="form-group col-md-3">
+                    <label>Weight</label>
+                    <input class="form-control" placeholder="Weight in g" [(ngModel)] = "newItem.weight"> 
+                </div>
+                <div class="form-group col-md-9">
+                    <label>&nbsp;</label>
+                    <button class="btn btn-primary w-100" (click)="addItem()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="mtb-3 card">
+        <div class="card-header">
+            <h2 class="text-center">Item List</h2>
+        </div>
+        <div class="card-body">
+            <table class="table table-striped table-bordered">
+                <thead>
+                    <tr>
+                        <th>Title</th>
+                        <th>Description</th>
+                        <th>Category</th>
+                        <th>Height</th>
+                        <th>Length</th>
+                        <th>Width</th>
+                        <th>Packed Height</th>
+                        <th>Packed Length</th>
+                        <th>Packed Width</th>
+                        <th>Manufacturer</th>
+                        <th>Price</th>
+                        <th>Link</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr *ngFor="let item of items; index as itemIndex">
+                        <td>{{item.name}}</td>
+                        <td>{{item.description}}</td>
+                        <td>{{item.category.name}}</td>
+                        <td>{{item.articleMeasure.height}}</td>
+                        <td>{{item.articleMeasure.length}}</td>
+                        <td>{{item.articleMeasure.width}}</td>
+                        <td>{{item.packedMeasure.height}}</td>
+                        <td>{{item.packedMeasure.length}}</td>
+                        <td>{{item.packedMeasure.width}}</td>
+                        <td>{{item.manufacturer}}</td>
+                        <td>{{item.paidPrice}}</td>
+                        <td><a href="{{item.articelLink}}">{{item.articelLink}}</a></td>
+                        <td><button class="btn btn-danger w-100" (click)="deleteItem(itemIndex)">Delete</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+</div>
