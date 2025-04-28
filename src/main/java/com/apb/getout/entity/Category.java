@@ -30,7 +30,7 @@ public class Category {
 	private String name;
 	
 	@Column(name = "description")
-	private String descripion;
+	private String description;
 
 	@OneToMany(mappedBy = "category")
 	private List<Item> items;
