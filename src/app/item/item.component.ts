@@ -8,7 +8,7 @@ import { MeasureUnit } from '../models/measure.model';
   selector: 'app-item',
   imports: [FormsModule, CommonModule],
   templateUrl: './item.component.html',
-  styleUrl: './item.component.css',
+  styleUrls: ['./item.component.css'],
   standalone: true
 })
 export class ItemComponent implements OnInit{
@@ -29,7 +29,7 @@ export class ItemComponent implements OnInit{
 
   deleteItem(index: number) {
     this.items.splice(index, 1);
-    this.storeLocal
+    this.storeLocal();
   }
     
 

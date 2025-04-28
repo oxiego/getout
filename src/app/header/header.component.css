@@ -1,0 +1,6 @@
+.hero-image img {
+    height: 150px;         /* Maximal 200px hoch */
+    object-fit: cover;     /* Bild schön zuschneiden */
+    width: 100%;           /* Immer volle Breite */
+    object-position: center; /* Bild in der Mitte zentrieren */
+  }

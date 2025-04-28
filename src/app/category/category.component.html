@@ -1,1 +1,52 @@
-<p>category works!</p>
+<div class="container">
+
+    <div class="mtb-3 card">
+      <div class="card-header">
+        <h2 class="text-center">Category Editor</h2>
+      </div>
+      <div class="card-body">
+        <div class="row">
+          <div class="form-group col-md-6">
+            <label for="newCategory.name">Name</label>
+            <input class="form-control" placeholder="Name" [(ngModel)]="newCategory.name">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="newCategory.description">Description</label>
+            <input class="form-control" placeholder="Description" [(ngModel)]="newCategory.description">
+          </div>
+        </div>
+  
+        <div class="row mt-3">
+          <div class="form-group col-md-12">
+            <button class="btn btn-primary w-100" (click)="addCategory()">Add Category</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  
+    <div class="mtb-3 card">
+      <div class="card-header">
+        <h2 class="text-center">Category List</h2>
+      </div>
+      <div class="card-body">
+        <table class="table table-striped table-bordered">
+          <thead>
+            <tr>
+              <th>Name</th>
+              <th>Description</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let category of categories; index as categoryIndex">
+              <td>{{ category.name }}</td>
+              <td>{{ category.description }}</td>
+              <td><button class="btn btn-danger w-100" (click)="deleteCategory(categoryIndex)">Delete</button></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+  </div>
+  
