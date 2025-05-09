@@ -68,7 +68,8 @@ export class ItemComponent implements OnInit{
       category: {
         id: '',
         name: '',
-        description: ''
+        description: '',
+        items: []
       } 
     };
   }
