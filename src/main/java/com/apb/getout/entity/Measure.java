@@ -1,6 +1,6 @@
 package com.apb.getout.entity;
 
-import java.math.BigInteger;
+import java.math.BigDecimal;
 
 import jakarta.persistence.Embeddable;
 import jakarta.persistence.EnumType;
@@ -19,7 +19,7 @@ public class Measure {
 
 	@Enumerated(EnumType.STRING)
 	private MeasureUnit unit = MeasureUnit.CM;
-	private BigInteger height;
-	private BigInteger width;
-	private BigInteger length;
+	private BigDecimal height;
+	private BigDecimal width;
+	private BigDecimal length;
 }

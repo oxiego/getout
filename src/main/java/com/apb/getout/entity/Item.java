@@ -62,7 +62,7 @@ public class Item {
 	private Measure packedMeasure;
 
 	@Column(name = "weight")
-	private BigInteger weight;
+	private BigDecimal weight;
 
 	@Column(name = "paidPrice")
 	private BigDecimal paidPrice;

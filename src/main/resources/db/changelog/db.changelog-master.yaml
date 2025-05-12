@@ -1,4 +1,8 @@
 databaseChangeLog:
  - include:
     file: classpath:db/changelog/init/init-1.yaml
-    #src/main/resources/db/changelog/init/init-1.yaml
+    
+ - include:
+    file: classpath:db/changelog/init/init-2.sql
+    relativeToChangelogFile: false
+    
