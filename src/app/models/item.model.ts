@@ -2,10 +2,10 @@ import { Category } from "./category.model";
 import { Measure } from "./measure.model";
 
 export interface Item {
-    id: string;
+    uuid: string;
     name: string;
-    manufacturer: string;
-    articelLink: string;
+    manufactorer: string;
+    articleLink: string;
     description: string;
     articleMeasure: Measure;
     packedMeasure: Measure;

@@ -1,0 +1,77 @@
+<div class="mtb-3 card">
+    <div class="card-header">
+        <h2 class="text-center">{{ isEdit ? 'Edit Gear' : 'Add Gear' }}</h2>
+    </div>
+    <div class="card-body">
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="item.name">Title</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.name">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="item.description">Description</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.description">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="category">Category</label>
+                <select class="form-control" [(ngModel)]="item.category" name="category">
+                  <option [ngValue]="null">-- Select Category --</option>
+                  <option *ngFor="let cat of categories" [ngValue]="cat">{{ cat.name }}</option>
+                </select>
+            </div>            
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="item.articleMeasure.height">Height</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.articleMeasure.height">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="item.articleMeasure.length">Length</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.articleMeasure.length">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="item.articleMeasure.width">Width</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.articleMeasure.width">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="item.packedMeasure.height">Packed Height</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.packedMeasure.height">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="item.packedMeasure.length">Packed Length</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.packedMeasure.length">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="item.packedMeasure.width">Packed Width</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.packedMeasure.width">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-4">
+                <label for="item.manufacturer">Manufacturer</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.manufactorer">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="item.paidPrice">Price</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.paidPrice">
+            </div>
+            <div class="form-group col-md-4">
+                <label for="item.articelLink">Link</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.articleLink">
+            </div>
+        </div>
+        <div class="row">
+            <div class="form-group col-md-3">
+                <label>Weight</label>
+                <input class="form-control" placeholder="(in g)" [(ngModel)]="item.weight">
+            </div>
+
+        </div>
+        <div class="d-flex justify-content-between mt-4">
+            <button class="btn btn-secondary w-45" (click)="cancel()">Cancel</button>
+            <button class="btn btn-primary w-45" (click)="save()">Save</button>
+        </div>
+    </div>
+</div>
