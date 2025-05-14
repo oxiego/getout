@@ -34,6 +34,10 @@ export class ItemEditorDialogComponent {
   ngOnInit() {
     this.categoryService.getCategories().subscribe(data => {
       this.categories = data;
+
+      if (this.item.category?.id) {
+        this.item.category = this.categories.find(cat => cat.id === this.item.category?.id) ?? null;
+      }
     });
   }
 

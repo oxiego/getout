@@ -9,8 +9,8 @@
                 <input class="form-control" placeholder="" [(ngModel)]="item.name">
             </div>
             <div class="form-group col-md-4">
-                <label for="item.description">Description</label>
-                <input class="form-control" placeholder="" [(ngModel)]="item.description">
+                <label for="item.manufacturer">Manufacturer</label>
+                <input class="form-control" placeholder="" [(ngModel)]="item.manufactorer">
             </div>
             <div class="form-group col-md-4">
                 <label for="category">Category</label>
@@ -20,6 +20,13 @@
                 </select>
             </div>            
         </div>
+        <div class="row">
+<div class="form-group col-md-12">
+    <label for="item.description">Description</label>
+    <textarea class="form-control" rows="5" [(ngModel)]="item.description"></textarea>
+</div>
+        </div>
+
         <div class="row">
             <div class="form-group col-md-4">
                 <label for="item.articleMeasure.height">Height</label>
@@ -50,8 +57,8 @@
         </div>
         <div class="row">
             <div class="form-group col-md-4">
-                <label for="item.manufacturer">Manufacturer</label>
-                <input class="form-control" placeholder="" [(ngModel)]="item.manufactorer">
+                <label>Weight</label>
+                <input class="form-control" placeholder="(in g)" [(ngModel)]="item.weight">
             </div>
             <div class="form-group col-md-4">
                 <label for="item.paidPrice">Price</label>
@@ -62,13 +69,7 @@
                 <input class="form-control" placeholder="" [(ngModel)]="item.articleLink">
             </div>
         </div>
-        <div class="row">
-            <div class="form-group col-md-3">
-                <label>Weight</label>
-                <input class="form-control" placeholder="(in g)" [(ngModel)]="item.weight">
-            </div>
-
-        </div>
+        
         <div class="d-flex justify-content-between mt-4">
             <button class="btn btn-secondary w-45" (click)="cancel()">Cancel</button>
             <button class="btn btn-primary w-45" (click)="save()">Save</button>

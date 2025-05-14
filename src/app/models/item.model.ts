@@ -11,5 +11,5 @@ export interface Item {
     packedMeasure: Measure;
     weight: number;
     paidPrice: number;
-    category: Category;
+    category: Category | null;
 }

@@ -18,4 +18,13 @@
     text-align: center;
   }
 
-  
+  .bg-alt-white {
+    background-color: #ffffff !important;
+  }
+  .bg-alt-light {
+    background-color: #e1e1e1 !important;
+  }
+
+  .card-header {
+    background-color: hsl(126, 76%, 80%) !important;
+  }
