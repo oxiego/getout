@@ -1,3 +1,4 @@
+
 plugins {
 	id 'java'
 	id 'org.springframework.boot' version '3.4.4'
@@ -8,6 +9,16 @@ plugins {
 
 group = 'com.apb'
 version = '0.0.1-SNAPSHOT'
+
+description = 'GetOut – Spring Boot backend for gear planning'
+archivesBaseName = 'getout2be'
+
+// Lizenz-Informationen für GPLv3
+license {
+    name = 'GNU General Public License v3.0'
+    url = 'https://www.gnu.org/licenses/gpl-3.0.html'
+    distribution = 'repo'
+}
 
 java {
 	toolchain {
