@@ -1,0 +1,14 @@
+<h5 class="mb-3">Open Packlist</h5>
+
+<ul class="list-group mb-3">
+  <li
+    *ngFor="let list of packlists"
+    class="list-group-item list-group-item-action"
+    (click)="select(list)">
+    {{ list.name }}
+  </li>
+</ul>
+
+<div class="text-end">
+  <button class="btn btn-outline-secondary" (click)="cancel()">Cancel</button>
+</div>
