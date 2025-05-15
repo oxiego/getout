@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # GetOut 🏕️
 
 **GetOut** is a web-based application for planning outdoor adventures, organizing your gear, and staying prepared — whether you're hiking remote trails or paddling wild rivers.
@@ -71,13 +70,11 @@ For more information on using the Angular CLI, including detailed command refere
 **GetOut** is a web-based application that helps you organize your gear, plan outdoor adventures, and stay prepared – whether you're hiking remote trails or paddling wild rivers.
 
 This is the frontend project built with **Angular** and **Bootstrap**.
->>>>>>> frontend-origin/main
 
 ---
 
 ## 🚀 Features
 
-<<<<<<< HEAD
 - ✅ Responsive Angular Frontend (Bootstrap-based)
 - ✅ Spring Boot REST API backend
 - ✅ PostgreSQL storage for user data
@@ -144,6 +141,5 @@ cd frontend/
 ```bash
 git clone https://github.com/oxiego/getout2fe.git
 cd getout2fe
->>>>>>> frontend-origin/main
 npm install
 ng serve
