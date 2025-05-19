@@ -35,7 +35,7 @@ services:
       context: ./frontend
     container_name: getout-frontend
     ports:
-      - "4200:80"
+      - "80:80"
     depends_on:
       - backend
     networks:
