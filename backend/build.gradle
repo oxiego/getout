@@ -36,6 +36,8 @@ dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-security'
 	implementation 'org.springframework.boot:spring-boot-starter-web'
 	implementation 'org.mapstruct:mapstruct:1.5.5.Final'
+	implementation 'org.liquibase:liquibase-core'
+		                              
 	annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.5.Final'
 	compileOnly 'org.projectlombok:lombok'
 	developmentOnly 'org.springframework.boot:spring-boot-devtools'
@@ -51,17 +53,19 @@ dependencies {
 	liquibaseRuntime 'org.liquibase.ext:liquibase-hibernate5:4.23.2'
     liquibaseRuntime 'org.hibernate.orm:hibernate-core'
     
+    
 }
 
 tasks.named('test') {
 	useJUnitPlatform()
 }
 
+
 liquibase {
     activities {
         main {
             referenceUrl 'hibernate:spring:com.apb.getout.entity?dialect=org.hibernate.dialect.PostgreSQLDialect'
-            changelogFile 'src/main/resources/db/changelog/gen-db.changelog-master.yaml'
+            changelogFile 'src/main/resources/db/changelog/db.changelog-master.yaml'
             url 'jdbc:postgresql://localhost:5432/postgres'
             username 'postgres'
             password 'postgres'

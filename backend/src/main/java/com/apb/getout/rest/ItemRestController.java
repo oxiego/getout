@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.UUID;
 
 import org.springframework.beans.BeanUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,43 +19,46 @@ import org.springframework.web.bind.annotation.RestController;
 import com.apb.getout.entity.Item;
 import com.apb.getout.entity.repository.ItemRepository;
 import com.apb.getout.exception.ItemNotFoundException;
+import com.apb.getout.service.ItemService;
 
 import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/items")
-@RequiredArgsConstructor
 public class ItemRestController {
 	
-	private final ItemRepository itemRepository;
+	
+	private ItemService itemService;
+	
+	public ItemRestController (ItemService itemService) {
+		this.itemService = itemService;
+	}
 	
 	@GetMapping
 	public List<Item> getAllItems() {
-		return itemRepository.findAll();
+		return itemService.findAllItems();
 	}
 	
 	@PostMapping
-	public Item addMapping(@RequestBody Item item) {
+	public Item addItem(@RequestBody Item item) {
 		item.setCreated(new Timestamp(new Date().getTime()));
-		return itemRepository.save(item);
+		return itemService.save(item);
 	}
 
 	@PutMapping("/{uuid}")
-	public Item getMethodName(@PathVariable("uuid") UUID uuid, @RequestBody Item item) {
-		return itemRepository.findById(uuid).map(existing -> {
-			BeanUtils.copyProperties(item, existing, "uuid", "createdAt");
-			return itemRepository.save(existing);
-		}).orElseThrow(() -> new ItemNotFoundException(uuid));
+	public Item editItem(@PathVariable("uuid") UUID uuid, @RequestBody Item item) {
+		return itemService.editItem(uuid, item);
 	}
 	
 	@GetMapping("/{uuid}")
-	public Item getMethodName(@PathVariable("uuid") UUID uuid) {
-		return itemRepository.findById(uuid).orElseThrow(() -> new ItemNotFoundException(uuid));
+	public Item getItem(@PathVariable("uuid") UUID uuid) {
+		return itemService.getItem(uuid);
+		
 	}
 	
 	@DeleteMapping("/{id}")
 	public void deleteItem(@PathVariable("id") UUID id) {
-		itemRepository.deleteById(id);
+		itemService.deleteItem(id);
 	}
 	
 }

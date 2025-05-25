@@ -29,21 +29,3 @@ databaseChangeLog:
             path: db/changelog/init/004-init.sql
             splitStatements: true
             endDelimiter: ;
-
-  - changeSet:
-        id: initdata-1
-        author: alex
-        changes:
-          - sqlFile:
-              path: db/changelog/init_data/001-category.sql
-              splitStatements: true
-              endDelimiter: ;
-
-  - changeSet:
-        id: initdata-2
-        author: alex
-        changes:
-          - sqlFile:
-              path: db/changelog/init_data/002-items.sql
-              splitStatements: true
-              endDelimiter: ;			  
