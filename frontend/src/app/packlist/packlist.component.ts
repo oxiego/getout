@@ -6,25 +6,31 @@ import { Category } from '../models/category.model';
 import { Item } from '../models/item.model';
 import { FormsModule } from '@angular/forms';
 import { Packlist } from '../models/packlist';
-import { Dialog } from '@angular/cdk/dialog';
+import { Dialog, DialogModule } from '@angular/cdk/dialog';
 import { PacklistOpenDialogComponent } from './packlist-open-dialog/packlist-open-dialog.component';
 import { PacklistService } from '../service/packlist.service';
 
 @Component({
   selector: 'app-packlist',
   standalone: true,
-  imports: [CommonModule, FormsModule],
+  imports: [CommonModule, FormsModule, DialogModule],
   templateUrl: './packlist.component.html',
   styleUrls: ['./packlist.component.css']
 })
 export class PacklistComponent {
+
   categoryAll: Category = {
     id: "0",
     name: 'All',
     description: 'All items'
   };
 
-  packlistName = '';
+  //packlistName = '';
+  //packlistItems: any[] = [];
+  currentPacklist: Packlist = {
+    name: "",
+    items: []
+  };
 
   availablePacklists: Packlist[] = [];
 
@@ -33,8 +39,9 @@ export class PacklistComponent {
   private allItems: Item[] = [];
 
   availableItems: Item[] = [...this.allItems]; // initial alles links
-  packlistItems: any[] = [];
-  
+
+  uuidToDelete: string | null = null;
+
   private pressTimer: ReturnType<typeof setTimeout> | null = null;
   private longPressTriggered = false;
   private readonly LONG_PRESS_DELAY = 500;
@@ -61,10 +68,14 @@ export class PacklistComponent {
       }
     });
 
+    this.readPacklists(true);
+  }
+
+  readPacklists(init: boolean = false) {
     this.packlistService.getPacklists().subscribe({
       next: (packlists) => {
         this.availablePacklists = packlists;
-        if (this.availablePacklists.length > 0) {
+        if (init && this.availablePacklists.length > 0) {
           this.loadPacklist(this.availablePacklists[0]); // Lade die erste Packliste beim Start
         }
       }
@@ -95,7 +106,7 @@ export class PacklistComponent {
       clearTimeout(this.pressTimer);
       this.pressTimer = null;
     }
-    
+
     if (!this.longPressTriggered) {
       const mouseEvent = event as MouseEvent;
       const isCtrlPressed = mouseEvent.ctrlKey || mouseEvent.metaKey;
@@ -147,15 +158,16 @@ export class PacklistComponent {
 
   moveToPacklist(item: Item) {
     this.availableItems = this.availableItems.filter(i => i !== item);
-    this.packlistItems.push(item);
+    this.currentPacklist.items.push(item);
   }
 
   moveToSelected(item: Item) {
-    this.packlistItems = this.packlistItems.filter(i => i !== item);
+    this.currentPacklist.items = this.currentPacklist.items.filter(i => i !== item);
     this.availableItems.push(item);
   }
 
   openDialog() {
+    this.readPacklists();
     this.dialog
       .open(PacklistOpenDialogComponent, {
         data: this.availablePacklists,
@@ -173,14 +185,56 @@ export class PacklistComponent {
   }
 
   loadPacklist(list: any) {
-    this.packlistName = list.name;
-    this.packlistItems = [...list.items];
-    this.availableItems = this.allItems.filter(item => !this.packlistItems.includes(item));
+    this.currentPacklist.name = list.name;
+    this.currentPacklist.items = [...list.items];
+    this.availableItems = this.allItems.filter(item => !this.currentPacklist.items.includes(item));
+    this.currentPacklist = list
     this.closeDialog();
   }
 
   savePacklist() {
-    // Implementiere Speichern (lokal oder API)
-    console.log('Saved:', this.packlistName, this.packlistItems);
+    this.packlistService.savePacklist(this.currentPacklist).subscribe({
+      next: (savedPacklist) => {
+        const existingIndex = this.availablePacklists.findIndex(pl => pl.name === savedPacklist.name);
+        this.currentPacklist = savedPacklist;
+        if (existingIndex !== -1) {
+          this.availablePacklists[existingIndex] = savedPacklist; // Update existing packlist 
+        }
+      }
+    });
+  }
+
+  newPacklist() {
+    this.currentPacklist = {
+      name: "",
+      items: []
+    };
+  }
+
+  deletePacklist() {
+    if (this.currentPacklist.uuid) {
+      this.uuidToDelete = this.currentPacklist.uuid;
+    }
+  }
+  cancelDelete() {
+    this.uuidToDelete = null;
+  }
+
+  confirmDelete() {
+    if (this.uuidToDelete !== null) {
+      this.packlistService.deletePacklist(this.uuidToDelete).subscribe({
+        next: () => {
+          this.availablePacklists = this.availablePacklists.filter(pl => pl.uuid !== this.uuidToDelete);
+          this.uuidToDelete = null;
+          this.newPacklist(); // Reset current packlist
+        },
+        error: (err) => {
+          console.error('Error deleting packlist:', err);
+          this.uuidToDelete = null; 
+        }
+      });
+    }
   }
 }
+
+

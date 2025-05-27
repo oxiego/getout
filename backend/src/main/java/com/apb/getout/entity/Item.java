@@ -3,6 +3,7 @@ package com.apb.getout.entity;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Timestamp;
+import java.util.Base64;
 import java.util.UUID;
 
 import jakarta.persistence.AttributeOverride;
@@ -16,6 +17,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -69,4 +71,9 @@ public class Item {
 
 	@Column(name = "created")
 	private Timestamp created;
+	
+	@Column(name = "image_data")
+	private byte[] imageData;
+	
+	
 }

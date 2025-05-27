@@ -20,8 +20,8 @@
                 <div class="card-body">
                     <p class="mb-1"><strong>Category:</strong> {{ item.category?.name }}</p>
                     <!-- Bild mit float -->
-                    <img src="/assets/item_place_holder.png" alt="Bild"
-                        style="float: left; max-width: 40%; margin-right: 1rem; margin-bottom: 0.5rem;">
+                    <img [src]="item.imageBase64 ? item.imageBase64 : '/assets/item_place_holder.png'"
+                          alt="Bild" style="float: left; max-width: 40%; margin-right: 1rem; margin-bottom: 0.5rem;">
 
                     <!-- Text, der das Bild umläuft -->
                     <p class="mb-1"> {{ item.paidPrice | currency:'EUR':'symbol' }}</p>
@@ -65,7 +65,7 @@
         </div>
         <div *ngIf="confirmDeleteIndex !== null" class="confirmation-dialog">
             <div class="dialog-content">
-                <p>Do you really want to delete this category?</p>
+                <p>Do you really want to delete this gear?</p>
                 <div class="d-flex justify-content-center gap-2">
                     <button class="btn btn-danger" (click)="confirmDelete()">Yes, delete</button>
                     <button class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>

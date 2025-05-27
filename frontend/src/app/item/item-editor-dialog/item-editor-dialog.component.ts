@@ -30,6 +30,7 @@ export class ItemEditorDialogComponent {
   categories: Category[] = [];
 
   constructor(private categoryService: CategoryService) {}
+  imagePreview?: string;
 
   ngOnInit() {
     this.categoryService.getCategories().subscribe(data => {
@@ -47,5 +48,32 @@ export class ItemEditorDialogComponent {
 
   cancel() {
     this.dialogRef.close(null);
+  }
+
+  onImageSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        this.imagePreview = reader.result as string;
+        this.item.imageBase64 = this.imagePreview;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
+
+  onPaste(event: ClipboardEvent): void {
+    const item = event.clipboardData?.items[0];
+    if (item && item.type.indexOf('image') === 0) {
+      const file = item.getAsFile();
+      if (file) {
+        const reader = new FileReader();
+        reader.onload = () => {
+          this.imagePreview = reader.result as string;
+          this.item.imageBase64 = this.imagePreview;
+        };
+        reader.readAsDataURL(file);
+      }
+    }
   }
 }

@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.UUID;
 
-import org.springframework.beans.BeanUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,12 +14,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.apb.getout.entity.Item;
-import com.apb.getout.entity.repository.ItemRepository;
-import com.apb.getout.exception.ItemNotFoundException;
+import com.apb.getout.dto.ItemDto;
 import com.apb.getout.service.ItemService;
-
-import lombok.RequiredArgsConstructor;
 
 @RestController
 @RequestMapping("/api/items")
@@ -35,23 +29,23 @@ public class ItemRestController {
 	}
 	
 	@GetMapping
-	public List<Item> getAllItems() {
+	public List<ItemDto> getAllItems() {
 		return itemService.findAllItems();
 	}
 	
 	@PostMapping
-	public Item addItem(@RequestBody Item item) {
+	public ItemDto addItem(@RequestBody ItemDto item) {
 		item.setCreated(new Timestamp(new Date().getTime()));
 		return itemService.save(item);
 	}
 
 	@PutMapping("/{uuid}")
-	public Item editItem(@PathVariable("uuid") UUID uuid, @RequestBody Item item) {
+	public ItemDto editItem(@PathVariable("uuid") UUID uuid, @RequestBody ItemDto item) {
 		return itemService.editItem(uuid, item);
 	}
 	
 	@GetMapping("/{uuid}")
-	public Item getItem(@PathVariable("uuid") UUID uuid) {
+	public ItemDto getItem(@PathVariable("uuid") UUID uuid) {
 		return itemService.getItem(uuid);
 		
 	}

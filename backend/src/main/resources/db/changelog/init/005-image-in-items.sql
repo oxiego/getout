@@ -1,0 +1,1 @@
+ALTER TABLE public.item ADD COLUMN image_data BYTEA;

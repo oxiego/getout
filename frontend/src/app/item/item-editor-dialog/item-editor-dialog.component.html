@@ -76,3 +76,24 @@
         </div>
     </div>
 </div>
+<div class="mb-3">
+  <label for="imageInput" class="form-label">Bild</label>
+  <input
+    type="file"
+    class="form-control"
+    id="imageInput"
+    (change)="onImageSelected($event)"
+    accept="image/*"
+  />
+</div>
+
+<img *ngIf="imagePreview" [src]="imagePreview" class="img-thumbnail mt-2" style="max-height: 200px;" />
+
+<!-- Für Paste -->
+<div
+  class="mt-2 border p-2"
+  (paste)="onPaste($event)"
+  style="background: #f8f9fa; cursor: pointer;"
+>
+  Bild hier einfügen (Ctrl+V)
+</div>

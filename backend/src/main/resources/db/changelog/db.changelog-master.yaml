@@ -31,6 +31,16 @@ databaseChangeLog:
             endDelimiter: ;
 
   - changeSet:
+      id: init-5
+      author: alexander
+      changes:
+        - sqlFile:
+            path: db/changelog/init/005-image-in-items.sql
+            splitStatements: true
+            endDelimiter: ;
+
+
+  - changeSet:
         id: initdata-1
         author: alex
         changes:

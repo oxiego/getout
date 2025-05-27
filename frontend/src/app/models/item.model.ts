@@ -12,4 +12,5 @@ export interface Item {
     weight: number;
     paidPrice: number;
     category: Category | null;
+    imageBase64?: string;
 }

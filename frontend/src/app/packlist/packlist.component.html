@@ -8,12 +8,15 @@
   <div class="d-flex align-items-center justify-content-between mb-3">
 
     <div class="d-flex flex-grow-1 align-items-center me-3">
-      <input id="listName" class="form-control fw-bold fs-4" [(ngModel)]="packlistName" placeholder="..." />
+      <input id="listName" class="form-control fw-bold fs-4" [(ngModel)]="currentPacklist.name" placeholder="..." />
 
     </div>
     <div class="btn-group">
-      <button class="btn btn-outline-secondary" (click)="openDialog()">Open...</button>
-      <button class="btn btn-success" (click)="savePacklist()">Save</button>
+      <button class="btn btn-outline-primary me-3" (click)="newPacklist()"><i class="bi bi-file-earmark-plus me-1"></i> New</button>
+      <button class="btn btn-outline-secondary" (click)="openDialog()"><i class="bi bi-folder2-open me-1"></i></button>
+      <button class="btn btn-success me-3" (click)="savePacklist()"> <i class="bi bi-save me-1"></i></button>
+      <button class="btn btn-outline-danger" (click)="deletePacklist()"><i class="bi bi-trash me-1"></i> Delete</button>
+      
     </div>
   </div>
 
@@ -24,25 +27,44 @@
       <button class="btn btn-outline-secondary d-md-none mb-2" (click)="showFilters = !showFilters">
         <i class="bi bi-funnel"></i> Filter
       </button>
-  
-      <div class="category-flex mb-3">
+
+      <!-- Desktop: Direkt sichtbare Kategorie-Buttons -->
+      <div class="category-flex mb-3 d-none d-md-flex flex-wrap gap-2">
         <button type="button" class="btn" [ngClass]="{
-              'btn-success': isActive(categoryAll),
-              'btn-outline-success': !isActive(categoryAll)
-            }" (click)="toggleFilter(categoryAll)">All</button>
+      'btn-success': isActive(categoryAll),
+      'btn-outline-success': !isActive(categoryAll)
+    }" (click)="toggleFilter(categoryAll)">
+          All
+        </button>
         <button *ngFor="let category of categories" class="btn" [ngClass]="{
-              'btn-success': isActive(category),
-              'btn-outline-success': !isActive(category)
-            }" (mousedown)="startPressToggleFilter(category, $event)"
-               (mouseup)="endPressToggleFilter(category, $event)"
-               (mouseleave)="cancelPressToggleFilter()"
-               (touchstart)="startPressToggleFilter(category, $event)"
-               (touchend)="endPressToggleFilter(category, $event)"
-               (touchcancel)="cancelPressToggleFilter()">{{ category.name }}</button>
+      'btn-success': isActive(category),
+      'btn-outline-success': !isActive(category)
+    }" (mousedown)="startPressToggleFilter(category, $event)" (mouseup)="endPressToggleFilter(category, $event)"
+          (mouseleave)="cancelPressToggleFilter()" (touchstart)="startPressToggleFilter(category, $event)"
+          (touchend)="endPressToggleFilter(category, $event)" (touchcancel)="cancelPressToggleFilter()">
+          {{ category.name }}
+        </button>
       </div>
-  
-  
-  
+
+      <!-- Mobile: Ausklappbare Kategorie-Buttons -->
+      <div *ngIf="showFilters" class="mb-3 d-md-none border rounded p-2 bg-light">
+        <button type="button" class="btn btn-sm mb-2 me-2" [ngClass]="{
+      'btn-success': isActive(categoryAll),
+      'btn-outline-success': !isActive(categoryAll)
+    }" (click)="toggleFilter(categoryAll)">
+          All
+        </button>
+        <button *ngFor="let category of categories" type="button" class="btn btn-sm mb-2 me-2" [ngClass]="{
+      'btn-success': isActive(category),
+      'btn-outline-success': !isActive(category)
+    }" (mousedown)="startPressToggleFilter(category, $event)" (mouseup)="endPressToggleFilter(category, $event)"
+          (mouseleave)="cancelPressToggleFilter()" (touchstart)="startPressToggleFilter(category, $event)"
+          (touchend)="endPressToggleFilter(category, $event)" (touchcancel)="cancelPressToggleFilter()">
+          {{ category.name }}
+        </button>
+      </div>
+
+
       <!-- Main Lists -->
       <div class="row">
         <!-- Available Items -->
@@ -57,13 +79,14 @@
             </div>
           </div>
         </div>
-  
+
         <!-- Packlist Items -->
         <div class="col-12 col-md-8">
-          <ng-container *ngIf="availablePacklists?.length ?? 0 > 0; else noLists">
+          <!--ng-container *ngIf="availablePacklists?.length ?? 0 > 0; else noLists"-->
+          <ng-container *ngIf="true; else noLists">
             <h5>Packliste</h5>
             <div class="row">
-              <div class="col-sm-6 col-lg-4 mb-3" *ngFor="let item of getFiltered(packlistItems)">
+              <div class="col-sm-6 col-lg-4 mb-3" *ngFor="let item of getFiltered(this.currentPacklist.items)">
                 <div class="card h-100" (click)="moveToSelected(item)">
                   <div class="card-body">
                     <strong>{{ item.name }}</strong><br>
@@ -86,12 +109,24 @@
             </div>
           </ng-template>
         </div>
-  
-  
+
+
       </div>
     </div>
   </div>
 </div>
+
+<!-- Delete Dialog -->
+<div *ngIf="uuidToDelete !== null" class="overlay-modal">
+  <div class="modal-dialog-box">
+    <p>Do you really want to delete this packlist?</p>
+    <div class="d-flex justify-content-center gap-2 mt-3">
+      <button class="btn btn-danger" (click)="confirmDelete()">Yes, delete</button>
+      <button class="btn btn-secondary" (click)="cancelDelete()">Cancel</button>
+    </div>
+  </div>
+</div>
+
 
 <!-- Open Dialog -->
 <ng-template #openDialogTemplate>
@@ -110,3 +145,4 @@
     <button class="btn btn-secondary" (click)="closeDialog()">Cancel</button>
   </div>
 </ng-template>
+
