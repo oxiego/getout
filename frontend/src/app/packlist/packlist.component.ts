@@ -8,6 +8,7 @@ import { FormsModule } from '@angular/forms';
 import { Packlist } from '../models/packlist';
 import { Dialog } from '@angular/cdk/dialog';
 import { PacklistOpenDialogComponent } from './packlist-open-dialog/packlist-open-dialog.component';
+import { PacklistService } from '../service/packlist.service';
 
 @Component({
   selector: 'app-packlist',
@@ -17,29 +18,35 @@ import { PacklistOpenDialogComponent } from './packlist-open-dialog/packlist-ope
   styleUrls: ['./packlist.component.css']
 })
 export class PacklistComponent {
-  categoryAll:Category = {
+  categoryAll: Category = {
     id: "0",
     name: 'All',
     description: 'All items'
   };
 
-  packlistName = 'My Packing List';
+  packlistName = '';
 
-  availablePacklists : Packlist [] = [ ];
+  availablePacklists: Packlist[] = [];
 
-  categories:Category[] = [];
-  selectedFilters = new Set<string>();
+  categories: Category[] = [];
+  private selectedFilters = new Set<string>();
+  private allItems: Item[] = [];
 
-  allItems:Item[] = [];
-
-  availableItems:Item[] = [...this.allItems]; // initial alles links
+  availableItems: Item[] = [...this.allItems]; // initial alles links
   packlistItems: any[] = [];
+  
+  private pressTimer: ReturnType<typeof setTimeout> | null = null;
+  private longPressTriggered = false;
+  private readonly LONG_PRESS_DELAY = 500;
+  showFilters = false;
+
 
   constructor(
-    private categoryService: CategoryService, 
+    private categoryService: CategoryService,
     private itemService: ItemService,
+    private packlistService: PacklistService,
     private dialog: Dialog
-  ) {  }
+  ) { }
 
   ngOnInit(): void {
     this.categoryService.getCategories().subscribe({
@@ -51,9 +58,65 @@ export class PacklistComponent {
       next: (items) => {
         this.allItems = items;
         this.availableItems = [...this.allItems]; // initial alles links
+      }
+    });
+
+    this.packlistService.getPacklists().subscribe({
+      next: (packlists) => {
+        this.availablePacklists = packlists;
+        if (this.availablePacklists.length > 0) {
+          this.loadPacklist(this.availablePacklists[0]); // Lade die erste Packliste beim Start
         }
-      });
+      }
+    });
   }
+
+  startPressToggleFilter(category: Category, event: MouseEvent | TouchEvent): void {
+    const mouseEvent = event as MouseEvent;
+    const isCtrlPressed = mouseEvent.ctrlKey || mouseEvent.metaKey;
+    if (event instanceof TouchEvent) {
+      event.preventDefault();
+    }
+    if (isCtrlPressed) {
+      this.toggleFilter(category);
+      return;
+    }
+    this.longPressTriggered = false;
+    this.pressTimer = setTimeout(() => {
+      this.longPressTriggered = true;
+      this.toggleFilter(category); // Multi-Select bei Long Press
+    }, this.LONG_PRESS_DELAY);
+  }
+
+  endPressToggleFilter(category: Category, event: MouseEvent | TouchEvent): void {
+    const mouseEvent = event as MouseEvent;
+    const isCtrlPressed = mouseEvent.ctrlKey || mouseEvent.metaKey;
+    if (this.pressTimer) {
+      clearTimeout(this.pressTimer);
+      this.pressTimer = null;
+    }
+    
+    if (!this.longPressTriggered) {
+      const mouseEvent = event as MouseEvent;
+      const isCtrlPressed = mouseEvent.ctrlKey || mouseEvent.metaKey;
+      if (isCtrlPressed) {
+        this.toggleFilter(category); // redundante Absicherung
+      } else {
+        // normaler Klick (Single-Select)
+        this.selectedFilters.clear();
+        this.toggleFilter(category);
+      }
+    }
+  }
+
+  cancelPressToggleFilter(): void {
+    if (this.pressTimer) {
+      clearTimeout(this.pressTimer);
+      this.pressTimer = null;
+    }
+  }
+
+
 
   toggleFilter(category: Category) {
     if (category.name === 'All') {
@@ -79,7 +142,7 @@ export class PacklistComponent {
     if (this.selectedFilters.size === 0 || this.selectedFilters.has('All')) {
       return items;
     }
-    return items.filter(item => this.selectedFilters.has(item.category? item.category.name:this.categoryAll.name));
+    return items.filter(item => this.selectedFilters.has(item.category ? item.category.name : this.categoryAll.name));
   }
 
   moveToPacklist(item: Item) {
@@ -93,31 +156,31 @@ export class PacklistComponent {
   }
 
   openDialog() {
-   this.dialog
-    .open(PacklistOpenDialogComponent, {
-      data: this.availablePacklists,
-    })
-    .closed
-    .subscribe(result => {
-      if (result) {
-        this.loadPacklist(result);
-      }
-    });
-}
+    this.dialog
+      .open(PacklistOpenDialogComponent, {
+        data: this.availablePacklists,
+      })
+      .closed
+      .subscribe(result => {
+        if (result) {
+          this.loadPacklist(result);
+        }
+      });
+  }
 
-closeDialog() {
-  // Dialog schließen
-}
+  closeDialog() {
+    // Dialog schließen
+  }
 
-loadPacklist(list: any) {
-  this.packlistName = list.name;
-  this.packlistItems = [...list.items];
-  this.availableItems = this.allItems.filter(item => !this.packlistItems.includes(item));
-  this.closeDialog();
-}
+  loadPacklist(list: any) {
+    this.packlistName = list.name;
+    this.packlistItems = [...list.items];
+    this.availableItems = this.allItems.filter(item => !this.packlistItems.includes(item));
+    this.closeDialog();
+  }
 
-savePacklist() {
-  // Implementiere Speichern (lokal oder API)
-  console.log('Saved:', this.packlistName, this.packlistItems);
-}
+  savePacklist() {
+    // Implementiere Speichern (lokal oder API)
+    console.log('Saved:', this.packlistName, this.packlistItems);
+  }
 }

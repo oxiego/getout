@@ -1,14 +1,15 @@
 <div class="container mt-4">
 
   <!-- Header: Title + Buttons -->
+  <div class="col-12 mb-3 ">
+    <h4 style="text-align: center;"> Packlist-Editor </h4>
+  </div>
+
   <div class="d-flex align-items-center justify-content-between mb-3">
+
     <div class="d-flex flex-grow-1 align-items-center me-3">
-      <input
-  id="listName"
-  class="form-control fw-bold fs-4"
-  [(ngModel)]="packlistName"
-  placeholder="..."/>
-      
+      <input id="listName" class="form-control fw-bold fs-4" [(ngModel)]="packlistName" placeholder="..." />
+
     </div>
     <div class="btn-group">
       <button class="btn btn-outline-secondary" (click)="openDialog()">Open...</button>
@@ -19,40 +20,36 @@
   <!-- Card/Kasten -->
   <div class="card shadow">
     <div class="card-body">
-      <h4 class="card-title mb-4">Packlist-Editor</h4>
-
       <!-- Filter Buttons -->
-<div class="category-flex mb-3">
-    <button
-          type="button"
-          class="btn"
-          [ngClass]="{
-            'btn-success': isActive(categoryAll),
-            'btn-outline-success': !isActive(categoryAll)
-          }"
-          (click)="toggleFilter(categoryAll)">All</button>
-  <button
-    *ngFor="let category of categories"
-    class="btn"
-    [ngClass]="{
-      'btn-success': isActive(category),
-      'btn-outline-success': !isActive(category)
-    }"
-    (click)="toggleFilter(category)">
-    {{ category.name }}
-  </button>
-</div>
-
-      
-
+      <button class="btn btn-outline-secondary d-md-none mb-2" (click)="showFilters = !showFilters">
+        <i class="bi bi-funnel"></i> Filter
+      </button>
+  
+      <div class="category-flex mb-3">
+        <button type="button" class="btn" [ngClass]="{
+              'btn-success': isActive(categoryAll),
+              'btn-outline-success': !isActive(categoryAll)
+            }" (click)="toggleFilter(categoryAll)">All</button>
+        <button *ngFor="let category of categories" class="btn" [ngClass]="{
+              'btn-success': isActive(category),
+              'btn-outline-success': !isActive(category)
+            }" (mousedown)="startPressToggleFilter(category, $event)"
+               (mouseup)="endPressToggleFilter(category, $event)"
+               (mouseleave)="cancelPressToggleFilter()"
+               (touchstart)="startPressToggleFilter(category, $event)"
+               (touchend)="endPressToggleFilter(category, $event)"
+               (touchcancel)="cancelPressToggleFilter()">{{ category.name }}</button>
+      </div>
+  
+  
+  
       <!-- Main Lists -->
       <div class="row">
         <!-- Available Items -->
         <div class="col-12 col-md-4 mb-4">
           <h5>Available Items</h5>
-          <div class="list-group">
-            <div
-              *ngFor="let item of getFiltered(availableItems)"
+          <div class="list-group overflow-auto" style="max-height: 30vh;min-height: 30vh;">
+            <div *ngFor="let item of getFiltered(availableItems)"
               class="list-group-item list-group-item-action d-flex justify-content-between align-items-center"
               (click)="moveToPacklist(item)">
               {{ item.name }}
@@ -60,21 +57,37 @@
             </div>
           </div>
         </div>
-
+  
         <!-- Packlist Items -->
         <div class="col-12 col-md-8">
-          <h5>Packliste</h5>
-          <div class="row">
-            <div class="col-sm-6 col-lg-4 mb-3" *ngFor="let item of getFiltered(packlistItems)">
-              <div class="card h-100" (click)="moveToSelected(item)">
-                <div class="card-body">
-                  <strong>{{ item.name }}</strong><br>
-                  <small class="text-muted">{{ item.category?.name }}</small>
+          <ng-container *ngIf="availablePacklists?.length ?? 0 > 0; else noLists">
+            <h5>Packliste</h5>
+            <div class="row">
+              <div class="col-sm-6 col-lg-4 mb-3" *ngFor="let item of getFiltered(packlistItems)">
+                <div class="card h-100" (click)="moveToSelected(item)">
+                  <div class="card-body">
+                    <strong>{{ item.name }}</strong><br>
+                    <small class="text-muted">{{ item.category?.name }}</small>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
+          </ng-container>
+          <ng-template #noLists>
+            <div class="text-muted card h-100">
+              <div class="card-header">
+                <h5 class="card-title">No items in the packlist.</h5>
+              </div>
+              <div class="card-body">
+                <p class="card-text">To create a new packlist add a header and choose your items from the list.
+                  If you are done, save the list with the save button above.
+                </p>
+              </div>
+            </div>
+          </ng-template>
         </div>
+  
+  
       </div>
     </div>
   </div>
@@ -87,9 +100,7 @@
   </div>
   <div class="modal-body">
     <ul class="list-group">
-      <li
-        *ngFor="let list of availablePacklists"
-        class="list-group-item list-group-item-action"
+      <li *ngFor="let list of availablePacklists" class="list-group-item list-group-item-action"
         (click)="loadPacklist(list)">
         {{ list.name }}
       </li>

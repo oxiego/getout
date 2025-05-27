@@ -15,3 +15,7 @@
   white-space: normal;
   min-height: 3.5rem;
 }
+
+.card-header {
+  background-color: hsl(126, 76%, 80%) !important;
+}
