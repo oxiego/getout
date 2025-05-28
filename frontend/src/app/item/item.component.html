@@ -1,11 +1,31 @@
+<div *ngIf="isLoading" class="loading-overlay">
+  <div class="spinner-wrapper">
+    <div class="spinner-border text-primary" role="status"></div>
+    <p class="text-primary mt-2">Lade Ausrüstung...</p>
+  </div>
+</div>
 <h2 class="text-center">Gear</h2>
+
+<!-- Kategorie-Filter oben einbauen -->
+<div class="container mt-4">
+  <div class="d-flex flex-wrap gap-2 justify-content-center mb-3">
+    <button *ngFor="let category of categories" type="button" class="btn"
+            [ngClass]="{
+              'btn-success': activeCategory?.id === category.id,
+              'btn-outline-success': activeCategory?.id !== category.id
+            }"
+            (click)="setCategoryFilter(category)">
+      {{ category.name }}
+    </button>
+  </div>
+</div>
 
 <div class="container">
     <button class="btn btn-success mb-3" (click)="openAddDialog()">+ Add Gear</button>
 
 
     <div class="row g-3">
-        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let item of items; index as i">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3" *ngFor="let item of getFilteredItems(); index as i">
             <div class="card h-100">
                 <div class="card-header fw-bold">
                     <div class="d-flex justify-content-between mb-1">
@@ -21,6 +41,7 @@
                     <p class="mb-1"><strong>Category:</strong> {{ item.category?.name }}</p>
                     <!-- Bild mit float -->
                     <img [src]="item.imageBase64 ? item.imageBase64 : '/assets/item_place_holder.png'"
+                         loading="lazy"
                           alt="Bild" style="float: left; max-width: 40%; margin-right: 1rem; margin-bottom: 0.5rem;">
 
                     <!-- Text, der das Bild umläuft -->

@@ -16,9 +16,9 @@ import { CommonModule } from '@angular/common';
 })
 export class ItemEditorDialogComponent {
 
-  private dialogRef = inject(DialogRef<Item|null>);
+  private dialogRef = inject(DialogRef<Item | null>);
   data = inject(DIALOG_DATA) as Item;
-  
+
   item: Item = {
     ...this.data,
     articleMeasure: this.data.articleMeasure ?? { unit: MeasureUnit.CM, height: 0, width: 0, length: 0 },
@@ -29,8 +29,9 @@ export class ItemEditorDialogComponent {
 
   categories: Category[] = [];
 
-  constructor(private categoryService: CategoryService) {}
+  constructor(private categoryService: CategoryService) { }
   imagePreview?: string;
+  showFullscreen = false;
 
   ngOnInit() {
     this.categoryService.getCategories().subscribe(data => {
@@ -40,6 +41,9 @@ export class ItemEditorDialogComponent {
         this.item.category = this.categories.find(cat => cat.id === this.item.category?.id) ?? null;
       }
     });
+    if (this.item?.imageBase64) {
+      this.imagePreview = this.item.imageBase64;
+    }
   }
 
   save() {
@@ -75,5 +79,13 @@ export class ItemEditorDialogComponent {
         reader.readAsDataURL(file);
       }
     }
+  }
+
+  openFullscreen(): void {
+    this.showFullscreen = true;
+  }
+
+  closeFullscreen(): void {
+    this.showFullscreen = false;
   }
 }

@@ -87,7 +87,16 @@
   />
 </div>
 
-<img *ngIf="imagePreview" [src]="imagePreview" class="img-thumbnail mt-2" style="max-height: 200px;" />
+
+<div
+  *ngIf="showFullscreen"
+  class="fullscreen-overlay"
+  (click)="closeFullscreen()"
+>
+  <img [src]="imagePreview" class="fullscreen-image" />
+</div>
+<img *ngIf="imagePreview" [src]="imagePreview" class="img-thumbnail mt-2" style="max-height: 200px;" (click)="openFullscreen()"/>
+
 
 <!-- Für Paste -->
 <div
